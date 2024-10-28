@@ -40,6 +40,11 @@ const {name, age}={
 // const a= 0;
 // const name= 'ksh';
 
+interface LoginState{
+  email: string;
+  password: string;
+}
+
 export default function A_useState() {
   /*
     React의 체계
@@ -52,6 +57,14 @@ export default function A_useState() {
 
   */
   const [count, setCount]= useState<number>(0);
+
+  const [loginState, setLoginState]= useState<LoginState>({
+    email: '',
+    password: ''
+  });
+
+  const {email, password}= loginState;
+
   const handleIncrementButton=()=>{
     // set 상태 설정함수에 전달되는 인자값으로 count값이 업데이트됨.
     // * 이전의 상태와 연관이 없는 경우 
@@ -61,12 +74,53 @@ export default function A_useState() {
     // :prev 상태변수명
     // : 최신의 상태변수값을 가지고 옴
     setCount(prev=> prev+1);
+  }
+
+  // 여러 Input창을 관리하는 이벤트 핸들러
+  const handleInputChange= (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const {name, value}= e.target; // e.target: Dom요소(객체)
+    // name에 정적, vavlue에는 동적인 값
+    setLoginState((pre)=>({
+      ...pre, // email input창만 이벤트 발생 시 이전의 이메일, 패스워드를 모두 가져와
+      [name]: value // 현재 변화가 일어나고 있는 name(email)에 value(입력값)을 넣어 업데이트
+      // password는 이전의 값을 그대로 가지고 있음
+    }));
 
   }
   return (
     <div>
         <p>Count: {count}</p>
         <button onClick={handleIncrementButton}>증가</button>
+
+        <hr />
+        <form>
+          <div>
+            <label htmlFor='email'>email</label>
+            <input 
+              type="email"
+              id= 'email'
+              name= 'email'
+              value={email}
+              onChange={handleInputChange}
+              placeholder='please write your email'
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor='password'>password</label>
+            <input 
+              type="password"
+              id= 'password'
+              name= 'password'
+              value={password}
+              onChange={handleInputChange}
+              placeholder='please write your password'
+              required
+            />
+          </div>
+          
+          <button type='submit'>login</button>
+        </form>
     </div>
   );
 }
