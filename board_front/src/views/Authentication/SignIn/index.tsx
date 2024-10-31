@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import useAuthStore from '../../../stores/auth.store';
 
 //* Interface *//
 // 사용자 입력 정보(자격 정보)의 상태를 나타냄 
@@ -12,20 +13,26 @@ interface Credentials{
   password: string;
 }
 
+// 로그인 후 전역 상태에 저장될 사용자 데이터를 나타냄
+interface UserAuthData{
+  id: number;
+  email: string;
+}
+
 // 서버에서 반환하는 로그인 응답 데이터의 형태를 나타냄
 interface SignInResponseDto{
   token: string;
-  user: Credentials;
+  user: UserAuthData;
   exprTime: number;
 }
 
 // * Main Component: 로그인 컴포넌트 * //
 export default function SignIn() {
   // * State * //
-  const [user, setUser]= useState<Credentials>({
-    email: '',
-    password: ''
-  });
+  // const [user, setUser]= useState<Credentials>({
+  //   email: '',
+  //   password: ''
+  // });
   // state: 로그인 입력 필드 상태  
   const [credentials, setCredentials]= useState<Credentials>({
     email: '',
@@ -35,7 +42,7 @@ export default function SignIn() {
   const [error, setError]= useState<string>('');
   const [,setCookies]= useCookies(['token']);
 
-  //const { setUser }= useUserStore();
+  const { login }= useAuthStore();
   // * Hooks 기능 정의 * //
   // function: 페이지 전환
   const navigate= useNavigate();
@@ -47,7 +54,10 @@ export default function SignIn() {
     if(data){
       const {token, exprTime, user}= data;
       setToken(token, exprTime);
-      setUser(user);
+      login({
+        id: user.id,
+        name: user.email
+      })
       navigate('/');
     }
     else{
