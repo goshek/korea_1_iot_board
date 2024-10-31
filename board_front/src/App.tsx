@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import UseState from './react-study/A_useState';
 import Container from './layouts/Container';
 import { AUTH_PATH, BOARD_DETAIL_PATH, BOARD_UPDATE_PATH, BOARD_WRITE_PATH, MAIN_PATH, REACT_STUDY_PATH, USER_PATH } from './constants';
 import Main from './views/Main';
@@ -25,7 +24,7 @@ function App() {
 
           {/* 로그인 + 회원가입 화면 */}
           <Route path={AUTH_PATH} element={<Authentication />}/>
-
+          
           {/* 게시물 상세 보기 화면 */}
           <Route path={BOARD_DETAIL_PATH(':boardNumber')} element={<Board />}/>
 

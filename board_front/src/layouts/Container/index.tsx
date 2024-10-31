@@ -3,6 +3,7 @@ import React from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AUTH_PATH } from '../../constants';
 import Footer from './layout';
+import Header from '../Header';
 /*
     ! Outlet 컴포넌트
     : 라우트 계ㅒ층 구조에서 상위 라우트의 자식 커모넌트 렌더링 역할
@@ -20,7 +21,8 @@ export default function Container() {
   const {pathname}= useLocation();
   return (
     <>
-        {/* <Header /> */}
+        <Header />
+        <hr />
         {/* 자식 컴포넌트가 해당 위치에서 렌더링 */}
         <Outlet /> 
         {/* 현재 경로가 AUTH_PATH(로그인, 회원가입)이 아니면 Footer표시 */}
